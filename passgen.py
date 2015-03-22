@@ -7,7 +7,7 @@ import sys
 def passgen(master, hostname):
   message = hostname.encode('utf-8')
   secret = master.encode('utf-8')
-  return base64.b64encode(hmac.new(message, secret, digestmod=hashlib.sha512).digest()).decode('utf-8')
+  return base64.b64encode(hmac.new(message, secret, digestmod=hashlib.sha512).digest()).decode('utf-8')[:12]
 
 def main():
   print("Computer club machine password generation utility")
