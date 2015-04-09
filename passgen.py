@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import hashlib
 import hmac
 import base64
@@ -9,7 +11,7 @@ password_length = 12
 def passgen(master, hostname):
     message = hostname.encode('utf-8')
     secret = master.encode('utf-8')
-    my_hmac = hmac.new(message, secret, digestmod=hashlib.sha512).digest())
+    my_hmac = hmac.new(message, secret, digestmod=hashlib.sha512).digest()
     return base64.b64encode(my_hmac.decode('utf-8'))[:password_length]
 
 def main():
