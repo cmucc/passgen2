@@ -1,26 +1,49 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-import hashlib
 import hmac
+import hashlib
 import base64
 import getpass
 import sys
+from builtins import input
 
 password_length = 12
 
-def passgen(master, hostname):
-    message = hostname.encode('utf-8')
-    secret = master.encode('utf-8')
-    my_hmac = hmac.new(message, secret, digestmod=hashlib.sha512).digest()
-    return base64.b64encode(my_hmac.decode('utf-8'))[:password_length]
+hosts =\
+{
+    "engine01.club.cc.cmu.edu" : "1"
+}
+
+def passgen(master, hostname, version):
+    message = (hostname + version).encode("utf-8")
+    secret = master.encode("utf-8")
+    digest = hmac.new(message, secret, digestmod=hashlib.sha256).digest()
+    password = base64.b64encode(digest)[:password_length]
+    if isinstance(password, bytes): # Python 3
+        password = password.decode("utf-8")
+    return password
 
 def main():
-    print("Computer club machine password generation utility")
-    print("Run on secure, unshared machines only")
-    print("Make sure nobody is shoulder surfing")
-    master = getpass.getpass()
-    hostname = raw_input("Enter hostname: ")
-    print(passgen(master, hostname))
+    try:
+        print("Computer club machine password generation utility")
+        print("Run on secure, unshared machines only")
+        print("Make sure nobody is shoulder surfing")
+        master = getpass.getpass()
+        if not master:
+            print("Missing password")
+            sys.exit(1)
+        hostname = input("Enter full hostname: ")
+        if not hostname:
+            print("Missing hostname")
+            sys.exit(1)
+        version = hosts[hostname]
+        if not hosts[hostname]:
+            print("Host not found")
+            sys.exit(1)
+        print(passgen(master, hostname, version))
+    except KeyboardInterrupt:
+        pass
 
 if __name__ == "__main__":
     sys.exit(main())
