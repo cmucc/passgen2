@@ -6,14 +6,19 @@ import hashlib
 import base64
 import getpass
 import sys
-from builtins import input
 
 password_length = 12
 
+# Mapping from hosts to version numbers
 hosts =\
 {
     "engine01.club.cc.cmu.edu" : "1"
 }
+
+try:
+    input = raw_input
+except NameError:
+    pass
 
 def passgen(master, hostname, version):
     message = (hostname + version).encode("utf-8")
