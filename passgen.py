@@ -12,7 +12,9 @@ password_length = 12
 # Mapping from hosts to version numbers
 hosts =\
 {
-    "engine01.club.cc.cmu.edu" : "1"
+    "engine01.club.cc.cmu.edu" : "1",
+    "engine02.club.cc.cmu.edu" : "2",
+    "engine03.club.cc.cmu.edu" : "3",
 }
 
 try:
