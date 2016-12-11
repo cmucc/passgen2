@@ -9,12 +9,12 @@ import sys
 
 password_length = 12
 
-# Mapping from hosts to version numbers
-hosts =\
+# Increment this version number when changing the room
+default_version = "1"
+# Map special hosts to other version numbers
+special_hosts =\
 {
-    "engine01.club.cc.cmu.edu" : "1",
-    "engine02.club.cc.cmu.edu" : "2",
-    "engine03.club.cc.cmu.edu" : "3",
+#    "engine01" : "2",
 }
 
 try:
@@ -45,10 +45,10 @@ def main():
             print("Missing hostname")
             sys.exit(1)
         hostname = hostname.lower().split('.')[0]   # Canonicalize hostname
-        version = hosts[hostname]
-        if not hosts[hostname]:
-            print("Host not found")
-            sys.exit(1)
+        version = default_version
+        if hostname in special_hosts:
+            version = special_hosts[hostname]
+        print("Version " + version)
         print(passgen(master, hostname, version))
     except KeyboardInterrupt:
         pass
