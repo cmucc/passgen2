@@ -34,6 +34,7 @@ def passgen(master, hostname, version):
 
 def main():
     parser = argparse.ArgumentParser(prog='passgen', description='Computer Club machine password generation utility', fromfile_prefix_chars='@')
+    parser.add_argument('-f', help='only ask for master password once (don\'t use this when generating new passwords)', dest='prompt_twice', action='store_false')
     parser.add_argument('host_list', nargs=argparse.REMAINDER, help='list of hosts')
     args = parser.parse_args()
     hosts = args.host_list
@@ -44,13 +45,14 @@ def main():
         print("Make sure nobody is shoulder surfing")
         print("")
         master = getpass.getpass("  Master password: ")
-        master2 = getpass.getpass("Re-enter password: ")
         if not master:
             print("Missing password")
             sys.exit(1)
-        if not master == master2:
-            print("Unmatching password")
-            sys.exit(1)
+        if args.prompt_twice:
+            master2 = getpass.getpass("Re-enter password: ")
+            if not master == master2:
+                print("Unmatching password")
+                sys.exit(1)
 
         # Request a hostname if none were provided at command line.
         if len(hosts) == 0:
