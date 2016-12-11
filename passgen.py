@@ -6,6 +6,7 @@ import hashlib
 import base64
 import getpass
 import sys
+import argparse
 
 password_length = 12
 
@@ -32,6 +33,11 @@ def passgen(master, hostname, version):
     return password
 
 def main():
+    parser = argparse.ArgumentParser(prog='passgen', description='Computer Club machine password generation utility', fromfile_prefix_chars='@')
+    parser.add_argument('host_list', nargs=argparse.REMAINDER, help='list of hosts')
+    args = parser.parse_args()
+    hosts = args.host_list
+
     try:
         print("Computer Club machine password generation utility")
         print("Run on secure, unshared machines only")
@@ -45,16 +51,24 @@ def main():
         if not master == master2:
             print("Unmatching password")
             sys.exit(1)
-        hostname = input("Enter hostname: ")
-        if not hostname:
-            print("Missing hostname")
-            sys.exit(1)
-        hostname = hostname.lower().split('.')[0]   # Canonicalize hostname
-        version = default_version
-        if hostname in special_hosts:
-            version = special_hosts[hostname]
-        print("Version " + version)
-        print(passgen(master, hostname, version))
+
+        # Request a hostname if none were provided at command line.
+        if len(hosts) == 0:
+            print("")
+            hostname = input("         Hostname: ")
+            if not hostname:
+                print("Missing hostname")
+                sys.exit(1)
+            hosts.append(hostname)
+
+        print("")
+        for hostname in hosts:
+            hostname = hostname.lower().split('.')[0]   # Canonicalize hostname
+            version = default_version
+            if hostname in special_hosts:
+                version = special_hosts[hostname]
+            print("%s : %s  \t%s" % (hostname, version, passgen(master, hostname, version)))
+        print("")
     except KeyboardInterrupt:
         pass
 
