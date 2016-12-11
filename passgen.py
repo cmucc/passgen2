@@ -33,12 +33,17 @@ def passgen(master, hostname, version):
 
 def main():
     try:
-        print("Computer club machine password generation utility")
+        print("Computer Club machine password generation utility")
         print("Run on secure, unshared machines only")
         print("Make sure nobody is shoulder surfing")
-        master = getpass.getpass()
+        print("")
+        master = getpass.getpass("  Master password: ")
+        master2 = getpass.getpass("Re-enter password: ")
         if not master:
             print("Missing password")
+            sys.exit(1)
+        if not master == master2:
+            print("Unmatching password")
             sys.exit(1)
         hostname = input("Enter hostname: ")
         if not hostname:
