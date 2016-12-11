@@ -40,10 +40,11 @@ def main():
         if not master:
             print("Missing password")
             sys.exit(1)
-        hostname = input("Enter full hostname: ")
+        hostname = input("Enter hostname: ")
         if not hostname:
             print("Missing hostname")
             sys.exit(1)
+        hostname = hostname.lower().split('.')[0]   # Canonicalize hostname
         version = hosts[hostname]
         if not hosts[hostname]:
             print("Host not found")
