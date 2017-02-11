@@ -15,7 +15,7 @@ default_version = "1"
 # Map special hosts to other version numbers
 special_hosts =\
 {
-#    "engine01" : "2",
+    "contrib-cgi" : "2",
 }
 
 try:
