@@ -16,6 +16,7 @@ default_version = "1"
 special_hosts =\
 {
     "contrib-cgi" : "2",
+    "switch-01" : "3",
 }
 
 try:
