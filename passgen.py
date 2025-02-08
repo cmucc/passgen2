@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import hmac
@@ -28,9 +28,7 @@ def passgen(master, hostname, version):
     message = (hostname + version).encode("utf-8")
     secret = master.encode("utf-8")
     digest = hmac.new(message, secret, digestmod=hashlib.sha256).digest()
-    password = base64.b64encode(digest)[:password_length]
-    if isinstance(password, bytes): # Python 3
-        password = password.decode("utf-8")
+    password = base64.b64encode(digest)[:password_length].decode("utf-8")
     return password
 
 def main():
